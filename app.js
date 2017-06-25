@@ -1,5 +1,5 @@
-const request = require('request');
 const yargs = require('yargs');
+const geocode = require('./geocode/geocode');
 
 // 1301 lombard street user input
 // set up url to be dynamic
@@ -16,13 +16,10 @@ const argv = yargs
     .alias('help', 'h') // adds alias to previous method
     .argv; // takes config and runs through args, stores in argv variable
 
-    var encodedAddress = encodeURIComponent(argv.address);
-
-request({
-    url: `https://maps.google.com/maps/api/geocode/json?address=${encodedAddress}`,
-    json: true // convert json data to js obj
-}, (error, response, body) => {
-    console.log(`Address: ${body.results[0].formatted_address}`); // found with json view in chrome
-    console.log(`Latitude: ${body.results[0].geometry.location.lat}`); // print latitude
-    console.log(`Longitude: ${body.results[0].geometry.location.lng}`); // print longitude
+geocode.geocodeAddress(argv.address, (errorMessage, results) => {
+    if (errorMessage) {
+        console.log(errorMessage);
+    } else {
+        console.log(JSON.stringify(results, undefined, 2)); // pretty print format
+    }
 });
