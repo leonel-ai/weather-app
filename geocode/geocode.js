@@ -20,6 +20,6 @@ var geocodeAddress = (address, callback) => {
             });
         }
     });
-};
+}; 
 
 module.exports.geocodeAddress = geocodeAddress; // export property for function use elsewhere 
